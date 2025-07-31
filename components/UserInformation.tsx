@@ -15,7 +15,7 @@ async function UserInformation() {
   const imageUrl = user?.imageUrl;
 
   return (
-    <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg border py-4">
+    <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg border py-4 ">
       <Avatar>
         {user?.id ? (
           <AvatarImage src={imageUrl} />
@@ -44,7 +44,9 @@ async function UserInformation() {
 
       <SignedOut>
         <div className="text-center space-y-2">
-          <p className="font-semibold">You are not signed in</p>
+          <p className="font-semibold md:text-sm lg:text-lg">
+            You are not signed in
+          </p>
           <Button asChild className="bg-[#0B63C4] text-white font-semibold">
             <SignInButton>Sign In</SignInButton>
           </Button>
