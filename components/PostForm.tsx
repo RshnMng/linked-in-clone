@@ -3,11 +3,16 @@
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { useUser } from "@clerk/nextjs";
+import { ImageIcon } from "lucide-react";
+import { Button } from "./ui/button";
+import { useRef } from "react";
 
 //
 
 function PostForm() {
   const { user, isLoaded } = useUser();
+  const ref = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isLoaded) return null;
 
@@ -34,6 +39,20 @@ function PostForm() {
               className="flex-1 outline-none rounded-full py-3 px-4 border"
             />
             <input type="file" name="image" accept="image/*" hidden />
+
+            <button type="submit" hidden>
+              Post
+            </button>
+          </div>
+
+          {/* Preview conditonal check*/}
+          <div>
+            <Button>
+              <ImageIcon className="mr-2" size={16} color="currentColor" />
+              Add
+            </Button>
+
+            {/* add a remove preview button */}
           </div>
         </form>
       </div>
