@@ -21,6 +21,24 @@ function PostForm() {
   const lastName = user?.lastName;
   const imageUrl = user?.imageUrl;
 
+  const handlePostAction = async (formData: FormData) => {
+    const formDataCopy = formData;
+    ref.current?.reset();
+
+    const text = formDataCopy.get("postInput") as string;
+
+    if (!text.trim()) {
+      throw new Error("You must provide a post input");
+    }
+
+    setPreview(null);
+    await createPostAction(formDataCopy);
+    try {
+    } catch (error) {
+      console.log("Error creating post: ", error);
+    }
+  };
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -29,7 +47,14 @@ function PostForm() {
   };
   return (
     <div className="mb-2">
-      <form action="" ref={ref} className="p-3 bg-white rounded-lg border">
+      <form
+        action={(formData) => {
+          // handle form submission with server action
+          // toast notification based on promise above
+        }}
+        ref={ref}
+        className="p-3 bg-white rounded-lg border"
+      >
         <div className="flex items-center space-x-2">
           <Avatar>
             <AvatarImage src={imageUrl} />
