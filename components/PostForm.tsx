@@ -51,6 +51,8 @@ function PostForm() {
       <form
         action={(formData) => {
           // handle form submission with server action
+
+          handlePostAction(formData);
           // toast notification based on promise above
         }}
         ref={ref}

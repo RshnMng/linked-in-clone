@@ -38,12 +38,12 @@ export default async function createPostAction(formData: FormData) {
       // if there is an image
       //1. uplaod image
       //2. create post in database with photo
-      // const body: AddPostRequestBody = {
-      //   user: userDB,
-      //   text: postInput,
-      //   imageURl: image_url,
-      // };
-      // await Post.create(body);
+      const body: AddPostRequestBody = {
+        user: userDB,
+        text: postInput,
+        //   imageURl: image_url,
+      };
+      await Post.create(body);
     } else {
       // 1. create post in database without photo
 
