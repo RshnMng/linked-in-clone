@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { ImageIcon, XIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRef, useState } from "react";
+import createPostAction from "@/actions/createPostAction";
 
 //
 
