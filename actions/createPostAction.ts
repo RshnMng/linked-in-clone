@@ -7,6 +7,10 @@ import { Post } from "@/mongodb/models/post";
 import { IUser } from "@/types/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { AddPostRequestBody } from "@/app/api/posts/route";
+import generateSASToken, { containerName } from "@/lib/generate.SASToken";
+import { BlobServiceClient } from "@azure/storage-blob";
+import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
 
 export default async function createPostAction(formData: FormData) {
   const user = await currentUser();
@@ -38,10 +42,32 @@ export default async function createPostAction(formData: FormData) {
       // if there is an image
       //1. uplaod image
       //2. create post in database with photo
+
+      const accountName = process.env.AZURE_STORAGE_NAME;
+
+      const sasToken = await generateSASToken();
+
+      const blobServiceClient = new BlobServiceClient(
+        `https://${accountName}.blob.core.windows.net?${sasToken}`
+      );
+
+      const containerClient =
+        blobServiceClient.getContainerClient(containerName);
+
+      const timestamp = new Date().getTime();
+      const file_name = `${randomUUID()}_${timestamp}.png}`;
+
+      const blockBlobClient = containerClient.getBlockBlobClient(file_name);
+
+      const imageBuffer = await image.arrayBuffer();
+      const res = await blockBlobClient.uploadData(imageBuffer);
+
+      imageURl = res._response.request.url;
+
       const body: AddPostRequestBody = {
         user: userDB,
         text: postInput,
-        //   imageURl: image_url,
+        imageUrl: imageURl,
       };
       await Post.create(body);
     } else {
@@ -58,7 +84,5 @@ export default async function createPostAction(formData: FormData) {
     console.log("failed to create post", error);
   }
 
-  // create post in database
-
-  // revalidate path -- home page
+  revalidatePath("/");
 }
