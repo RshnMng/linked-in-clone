@@ -20,7 +20,20 @@ function PostOptions({ post }: { post: IPostDocument }) {
     }
   }, [post, user]);
 
-  const likeOrUnlikePost = async () => {};
+  const likeOrUnlikePost = async () => {
+    if (!user?.id) {
+      throw new Error("User not authenticated");
+    }
+
+    // copies state so we can manipulated it and keep it seperate from out state values
+    const originalLiked = liked;
+    const originalLikes = likes;
+
+    // is like true? have i already liked this? if so when this function runs filter through array of those who have liked it and return everyone but me -- basically unlike it -- if when the function runs if i havent already liked it, than take the array of those who have liked it -- spread it with the spread operator and then append my id to it -- basically like it ( the likes ?? [] is shorthand to tell the code that if there isnt any likes array already set up then set one up as an empty array)
+    const newLikes = liked
+      ? likes?.filter((like) => like !== user.id)
+      : [...(likes ?? []), user.id];
+  };
   return (
     <div>
       <div>
