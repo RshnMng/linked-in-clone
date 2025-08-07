@@ -16,6 +16,8 @@ function Post({ post }: { post: IPostDocument }) {
 
   const isAuthor = user?.id === post.user.userId;
 
+  console.log(post._id, "post");
+
   return (
     <div className="bg-white rounded-md border">
       <div className="p-4 flex space-x-2">
@@ -52,7 +54,7 @@ function Post({ post }: { post: IPostDocument }) {
             <Button
               variant="outline"
               onClick={() => {
-                const promise = deletePostAction(post.id);
+                const promise = deletePostAction(post._id as string);
               }}
             >
               <Trash2 />
